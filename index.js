@@ -241,7 +241,7 @@ class LinkedList {
     try {
       const meta = await this.getMeta();
 
-      // if out of bounds, return undefined (can insert at meta.length, but not greater than)
+      // if index is out of bounds, return undefined (can insert at meta.length, but not greater than)
       if (index < 0 || index > meta.length) return undefined;
       // if index is 0, unshift;
       if (index === 0) return await this.unshift(value);
@@ -266,6 +266,29 @@ class LinkedList {
     } catch (err) {
       console.error(err.message, err.stack);
     }
+  }
+
+  async remove(index) {
+    const meta = await this.getMeta();
+
+    // if index is out of bounds, return undefined
+    if (index < 0 || index >= meta.length) return undefined;
+    // if index is 0, use shift
+    if (index === 0) return await this.shift();
+    // if index is last, use pop
+    if (index === meta.length - 1) return await this.pop();
+
+    // find the previous doc
+    const pre = await this.get(index - 1);
+    // delete the doc at index (pre.next)
+    const removed = await this.collection.findOneAndDelete({ _id: pre.next });
+    // update pre.next to removed.value.next
+    await this.collection.updateOne({ _id: pre._id }, { $set: { next: removed.value.next } });
+
+    // update meta
+    meta.length--;
+    await this.setMeta(meta);
+    return removed.value.value;
   }
 
 }
@@ -296,7 +319,9 @@ class LinkedList {
     // set
     // await linkedList.set(2, 'Bunny');
     // insert
-    await linkedList.insert(3, 'Kangaroo');
+    // await linkedList.insert(3, 'Kangaroo');
+    // remove
+    await linkedList.remove(2);
 
   } catch (err) {
     console.error(err.message, err.stack);
