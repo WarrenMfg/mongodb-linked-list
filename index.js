@@ -12,6 +12,7 @@ class LinkedList {
       await this.client.connect();
       console.log('Connected to MongoDB Atlas');
       this.collection = this.client.db('dev').collection('linked-list');
+
     } catch (err) {
       console.error(err.message, err.stack);
     }
@@ -336,29 +337,15 @@ class LinkedList {
     await linkedList.init();
     await linkedList.resetAtlasData();
     await linkedList.resetMeta();
-    // push
+
+    // experiment with methods here
+
+    // push example
     await linkedList.push('Cat');
     await linkedList.push('Dog');
     await linkedList.push('Rooster');
-    // pop
-    // await linkedList.shift();
-    // await linkedList.shift();
-    // await linkedList.shift();
-    // unshift
-    // await linkedList.unshift('Rabbit');
-    // await linkedList.unshift('Groundhog');
-    // await linkedList.unshift('Bird');
-    // get
-    // await linkedList.get(2);
-    // await linkedList.get(3);
-    // await linkedList.get(7);
-    // set
-    // await linkedList.set(2, 'Bunny');
-    // insert
-    // await linkedList.insert(3, 'Kangaroo');
-    // remove
-    // await linkedList.remove(2);
-    // reverse
+
+    // reverse example
     await linkedList.reverse();
 
   } catch (err) {
