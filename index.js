@@ -197,6 +197,29 @@ class LinkedList {
     }
   }
 
+  async get(index, nodeWanted = true) {
+    try {
+      const meta = await this.getMeta();
+
+      // if index is out of bounds, return undefined
+      if (index < 0 || index > meta.length - 1) return undefined;
+
+      // otherwise, iterate
+      let counter = 0;
+      let pointer = await this.collection.findOne({ _id: meta.head });
+      while (counter !== index) {
+        counter++;
+        pointer = await this.collection.findOne({ _id: pointer.next });
+      }
+
+      // return pointer or value
+      return nodeWanted ? pointer : pointer.value;
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
+  }
+
 }
 
 
@@ -207,9 +230,9 @@ class LinkedList {
     await linkedList.resetAtlasData();
     await linkedList.resetMeta();
     // push
-    // await linkedList.push('Cat');
-    // await linkedList.push('Dog');
-    // await linkedList.push('Rooster');
+    await linkedList.push('Cat');
+    await linkedList.push('Dog');
+    await linkedList.push('Rooster');
     // pop
     // await linkedList.shift();
     // await linkedList.shift();
@@ -218,6 +241,10 @@ class LinkedList {
     await linkedList.unshift('Rabbit');
     await linkedList.unshift('Groundhog');
     await linkedList.unshift('Bird');
+    // get
+    await linkedList.get(2);
+    await linkedList.get(3);
+    await linkedList.get(7);
 
   } catch (err) {
     console.error(err.message, err.stack);
