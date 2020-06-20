@@ -221,15 +221,51 @@ class LinkedList {
   }
 
   async set(index, value) {
-    // get the value
-    const node = await this.get(index);
-    // if not exists, return false
-    if (!node) return false;
+    try {
+      // get the value
+      const node = await this.get(index);
+      // if not exists, return false
+      if (!node) return false;
 
-    // otherwise, update doc
-    node.value = value;
-    await this.collection.updateOne({ _id: node._id }, { $set: { value } });
-    return true;
+      // otherwise, update doc
+      node.value = value;
+      await this.collection.updateOne({ _id: node._id }, { $set: { value } });
+      return true;
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
+  }
+
+  async insert(index, value) {
+    try {
+      const meta = await this.getMeta();
+
+      // if out of bounds, return undefined (can insert at meta.length, but not greater than)
+      if (index < 0 || index > meta.length) return undefined;
+      // if index is 0, unshift;
+      if (index === 0) return await this.unshift(value);
+      // if index is meta.length, push
+      if (index === meta.length) return await this.push(value);
+
+      // otherwise, create new node
+      let newNode = await this.createNewNode(value);
+      newNode = newNode.ops[0];
+      // iterate with this.get
+      const pre = await this.get(index - 1);
+      // update newNode.next to pre.next
+      await this.collection.updateOne({ _id: newNode._id }, { $set: { next: pre.next } });
+      // update pre.next to newNode._id
+      await this.collection.updateOne({  _id: pre._id }, { $set: { next: newNode._id } });
+
+      // update meta
+      meta.length++;
+      const updatedMeta = await this.setMeta(meta);
+      return updatedMeta.value.length;
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
   }
 
 }
@@ -250,15 +286,17 @@ class LinkedList {
     // await linkedList.shift();
     // await linkedList.shift();
     // unshift
-    await linkedList.unshift('Rabbit');
-    await linkedList.unshift('Groundhog');
-    await linkedList.unshift('Bird');
+    // await linkedList.unshift('Rabbit');
+    // await linkedList.unshift('Groundhog');
+    // await linkedList.unshift('Bird');
     // get
     // await linkedList.get(2);
     // await linkedList.get(3);
     // await linkedList.get(7);
     // set
-    await linkedList.set(2, 'Bunny');
+    // await linkedList.set(2, 'Bunny');
+    // insert
+    await linkedList.insert(3, 'Kangaroo');
 
   } catch (err) {
     console.error(err.message, err.stack);
