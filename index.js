@@ -269,26 +269,62 @@ class LinkedList {
   }
 
   async remove(index) {
-    const meta = await this.getMeta();
+    try {
+      const meta = await this.getMeta();
 
-    // if index is out of bounds, return undefined
-    if (index < 0 || index >= meta.length) return undefined;
-    // if index is 0, use shift
-    if (index === 0) return await this.shift();
-    // if index is last, use pop
-    if (index === meta.length - 1) return await this.pop();
+      // if index is out of bounds, return undefined
+      if (index < 0 || index >= meta.length) return undefined;
+      // if index is 0, use shift
+      if (index === 0) return await this.shift();
+      // if index is last, use pop
+      if (index === meta.length - 1) return await this.pop();
 
-    // find the previous doc
-    const pre = await this.get(index - 1);
-    // delete the doc at index (pre.next)
-    const removed = await this.collection.findOneAndDelete({ _id: pre.next });
-    // update pre.next to removed.value.next
-    await this.collection.updateOne({ _id: pre._id }, { $set: { next: removed.value.next } });
+      // find the previous doc
+      const pre = await this.get(index - 1);
+      // delete the doc at index (pre.next)
+      const removed = await this.collection.findOneAndDelete({ _id: pre.next });
+      // update pre.next to removed.value.next
+      await this.collection.updateOne({ _id: pre._id }, { $set: { next: removed.value.next } });
 
-    // update meta
-    meta.length--;
-    await this.setMeta(meta);
-    return removed.value.value;
+      // update meta
+      meta.length--;
+      await this.setMeta(meta);
+      return removed.value.value;
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
+  }
+
+  async reverse() {
+    try {
+      const meta = await this.getMeta();
+      // get head
+      let node = await this.collection.findOne({ _id: meta.head });
+      // flip meta's head and tail
+      meta.head = meta.tail;
+      meta.tail = node._id;
+      await this.setMeta(meta);
+
+
+      let prev = { _id: null};
+      let next;
+      for (let i = 0; i < meta.length; i++) {
+        // save ref to node.next
+        next = await this.collection.findOne({ _id: node.next });
+        // reassign node.next to prev (from last iteration)
+        await this.collection.updateOne({ _id: node._id }, { $set: { next: prev._id } });
+
+        // move prev and node refs forward
+        prev = node;
+        node = next;
+      }
+
+      return true;
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
   }
 
 }
@@ -321,7 +357,9 @@ class LinkedList {
     // insert
     // await linkedList.insert(3, 'Kangaroo');
     // remove
-    await linkedList.remove(2);
+    // await linkedList.remove(2);
+    // reverse
+    await linkedList.reverse();
 
   } catch (err) {
     console.error(err.message, err.stack);
