@@ -117,13 +117,41 @@ class LinkedList {
       meta.tail = pre._id;
       meta.length--;
       await this.setMeta(meta);
-      console.log(popped.value.value);
       return popped.value.value;
 
     } catch (err) {
       console.error(err.message, err.stack);
     }
   }
+
+  async shift() {
+    try {
+      const meta = await this.getMeta();
+      if (!meta.head) return undefined;
+
+      const shifted = await this.collection.findOneAndDelete({ _id: meta.head });
+
+      // if head and tail are equal
+      if (meta.head.toString() === meta.tail.toString()) {
+        meta.head = null;
+        meta.tail = null;
+        meta.length = 0;
+        await this.setMeta(meta);
+        return shifted.value.value;
+      }
+
+      // if head and tail are not equal
+      meta.head = shifted.value.next;
+      meta.length--;
+      await this.setMeta(meta);
+      return shifted.value.value;
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
+
+  }
+
 }
 
 
@@ -138,7 +166,9 @@ class LinkedList {
     await linkedList.push('Dog');
     await linkedList.push('Rooster');
     // pop
-    await linkedList.pop();
+    await linkedList.shift();
+    await linkedList.shift();
+    await linkedList.shift();
 
   } catch (err) {
     console.error(err.message, err.stack);
