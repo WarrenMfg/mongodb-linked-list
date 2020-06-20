@@ -1,0 +1,19 @@
+{
+  "name": "mongodb-linked-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startDev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.5.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
