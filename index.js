@@ -27,7 +27,8 @@ class LinkedList {
         { meta: true },
         { $set: {
             head: null,
-            tail: null
+            tail: null,
+            length: 0
           }
         },
         { upsert: true }
@@ -49,35 +50,16 @@ class LinkedList {
   }
 
   async setMeta(obj) {
-    if (obj.head && obj.tail) {
-      return await this.collection.findOneAndUpdate(
-        { meta: true },
-        { $set: {
-            head: obj.head,
-            tail: obj.tail
-          }
-        },
-        { returnOriginal: false }
-      );
-    } else if (obj.head) {
-      return await this.collection.findOneAndUpdate(
-        { meta: true },
-        { $set: {
-            head: obj.head
-          }
-        },
-        { returnOriginal: false }
-      );
-    } else {
-      return await this.collection.findOneAndUpdate(
-        { meta: true },
-        { $set: {
-            tail: obj.tail
-          }
-        },
-        { returnOriginal: false }
-      );
-    }
+    return await this.collection.findOneAndUpdate(
+      { meta: true },
+      { $set: {
+          head: obj.head,
+          tail: obj.tail,
+          length: obj.length
+        }
+      },
+      { returnOriginal: false }
+    );
   }
 
   async push(value) {
@@ -96,7 +78,47 @@ class LinkedList {
       }
 
       // update meta doc
-      this.setMeta(meta);
+      meta.length++;
+      const updatedMeta = await this.setMeta(meta);
+      return updatedMeta.length;
+
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
+  }
+
+  async pop() {
+    try {
+      const meta = await this.getMeta();
+      if (!meta.tail) return undefined;
+
+      // if head and tail are equal
+      if (meta.head.toString() === meta.tail.toString()) {
+        const popped = await this.collection.findOneAndDelete({ _id: meta.head });
+        meta.head = null;
+        meta.tail = null;
+        meta.length = 0;
+        await this.setMeta(meta);
+        return popped.value.value;
+      }
+
+      // if head and tail are not equal
+      let pre = await this.collection.findOne({ _id: meta.head });
+      let lead = pre;
+      while (lead.next) {
+        pre = lead;
+        lead = await this.collection.findOne({ _id: lead.next });
+      }
+      // pop lead
+      const popped = await this.collection.findOneAndDelete({ _id: lead._id });
+      // update pre.next to be null
+      await this.collection.findOneAndUpdate({ _id: pre._id }, { $set: { next: null }})
+      meta.tail = pre._id;
+      meta.length--;
+      await this.setMeta(meta);
+      console.log(popped.value.value);
+      return popped.value.value;
 
     } catch (err) {
       console.error(err.message, err.stack);
@@ -111,8 +133,13 @@ class LinkedList {
     await linkedList.init();
     await linkedList.resetAtlasData();
     await linkedList.resetMeta();
+    // push
     await linkedList.push('Cat');
     await linkedList.push('Dog');
+    await linkedList.push('Rooster');
+    // pop
+    await linkedList.pop();
+
   } catch (err) {
     console.error(err.message, err.stack);
   }
