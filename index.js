@@ -220,6 +220,18 @@ class LinkedList {
     }
   }
 
+  async set(index, value) {
+    // get the value
+    const node = await this.get(index);
+    // if not exists, return false
+    if (!node) return false;
+
+    // otherwise, update doc
+    node.value = value;
+    await this.collection.updateOne({ _id: node._id }, { $set: { value } });
+    return true;
+  }
+
 }
 
 
@@ -242,9 +254,11 @@ class LinkedList {
     await linkedList.unshift('Groundhog');
     await linkedList.unshift('Bird');
     // get
-    await linkedList.get(2);
-    await linkedList.get(3);
-    await linkedList.get(7);
+    // await linkedList.get(2);
+    // await linkedList.get(3);
+    // await linkedList.get(7);
+    // set
+    await linkedList.set(2, 'Bunny');
 
   } catch (err) {
     console.error(err.message, err.stack);
