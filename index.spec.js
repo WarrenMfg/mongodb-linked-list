@@ -273,7 +273,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  describe('Insert', () => {
+  xdescribe('Insert', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.insert(-1)).to.be.undefined;
@@ -318,34 +318,55 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Remove', () => {
-    it('Returns undefined for indices outside its scope', () => {
-      expect(list.remove(-1)).to.be.undefined;
-      expect(list.remove(2)).to.be.undefined;
-      list.push(10);
-      expect(list.remove(-1)).to.be.undefined;
-      expect(list.remove(2)).to.be.undefined;
+  describe('Remove', () => {
+    it('Returns undefined for indices outside its scope', async () => {
+      try {
+        expect(await linkedList.remove(-1)).to.be.undefined;
+        expect(await linkedList.remove(1)).to.be.undefined;
+        await linkedList.push(10);
+        expect(await linkedList.remove(-1)).to.be.undefined;
+        expect(await linkedList.remove(1)).to.be.undefined;
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Returns a node\'s value when removed from the beginning and end of the list', () => {
-      pushItems(list);
-      expect(list.length).to.equal(5);
-      expect(list.remove(0)).to.equal(10);
-      expect(list.length).to.equal(4);
-      expect(list.remove(list.length - 1)).to.equal(50);
-      expect(list.length).to.equal(3);
+    it('Returns a node\'s value when removed from the beginning and end of the list', async () => {
+      try {
+        await pushItems(linkedList);
+        meta = await linkedList.getMeta();
+        expect(meta.length).to.equal(5);
+        expect(await linkedList.remove(0)).to.equal(10);
+        meta = await linkedList.getMeta();
+        expect(meta.length).to.equal(4);
+        expect(await linkedList.remove(meta.length - 1)).to.equal(50);
+        meta = await linkedList.getMeta();
+        expect(meta.length).to.equal(3);
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Returns a node\'s value when removed from the middle of the list', () => {
-      pushItems(list);
-      expect(list.length).to.equal(5);
-      expect(list.remove(2)).to.equal(30);
-      expect(list.length).to.equal(4);
-      expect(list.remove(2)).to.equal(40);
-      expect(list.length).to.equal(3);
-      for (let i = 0; i < list.length; i++) {
-        const remaining = [10, 20, 50];
-        expect(list.get(i, false)).to.equal(remaining[i]);
+    it('Returns a node\'s value when removed from the middle of the list', async () => {
+      try {
+        await pushItems(linkedList);
+        meta = await linkedList.getMeta();
+        expect(meta.length).to.equal(5);
+        expect(await linkedList.remove(2)).to.equal(30);
+        meta = await linkedList.getMeta();
+        expect(meta.length).to.equal(4);
+        expect(await linkedList.remove(2)).to.equal(40);
+        meta = await linkedList.getMeta();
+        expect(meta.length).to.equal(3);
+        for (let i = 0; i < meta.length; i++) {
+          const remaining = [10, 20, 50];
+          expect(await linkedList.get(i, false)).to.equal(remaining[i]);
+        }
+
+      } catch (err) {
+        console.log(err);
       }
     });
   });
