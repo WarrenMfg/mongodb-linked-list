@@ -241,7 +241,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  describe('Set', () => {
+  xdescribe('Set', () => {
     it('Returns false for indices outside its scope', async () => {
       try {
         expect(await linkedList.set(-1)).to.be.false;
@@ -273,32 +273,47 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Insert', () => {
-    it('Returns undefined for indices outside its scope', () => {
-      expect(list.insert(-1)).to.be.undefined;
-      expect(list.insert(2)).to.be.undefined;
-      list.push(10);
-      expect(list.insert(-1)).to.be.undefined;
-      expect(list.insert(2)).to.be.undefined;
+  describe('Insert', () => {
+    it('Returns undefined for indices outside its scope', async () => {
+      try {
+        expect(await linkedList.insert(-1)).to.be.undefined;
+        expect(await linkedList.insert(1)).to.be.undefined;
+        await linkedList.push(10);
+        expect(await linkedList.insert(-1)).to.be.undefined;
+        expect(await linkedList.insert(2)).to.be.undefined;
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Returns length when index === 0 and index === this.length', () => {
-      length = list.insert(0, 10);
-      expect(length).to.equal(1);
-      length = list.insert(1, 20);
-      expect(length).to.equal(2);
+    it('Returns length when index === 0 and index === this.length', async () => {
+      try {
+        length = await linkedList.insert(0, 10);
+        expect(length).to.equal(1);
+        length = await linkedList.insert(1, 20);
+        expect(length).to.equal(2);
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Returns length when inserting in the middle of the list', () => {
-      pushItems(list);
-      list.insert(2, 200);
-      expect(list.length).to.equal(6);
+    it('Returns length when inserting in the middle of the list', async () => {
+      try {
+        await pushItems(linkedList);
+        length = await linkedList.insert(2, 200);
+        expect(length).to.equal(6);
 
-      for (let i = 0; i < list.length; i++) {
-        const value = list.get(i, false);
-        if (i < 2) expect(value).to.equal((i + 1) * 10);
-        else if (i === 2) expect(value).to.equal(200);
-        else expect(value).to.equal(i * 10);
+        for (let i = 0; i < length; i++) {
+          const value = await linkedList.get(i, false);
+          if (i < 2) expect(value).to.equal((i + 1) * 10);
+          else if (i === 2) expect(value).to.equal(200);
+          else expect(value).to.equal(i * 10);
+        }
+
+      } catch (err) {
+        console.log(err);
       }
     });
   });
