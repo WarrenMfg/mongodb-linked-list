@@ -173,7 +173,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  describe('Unshift', () => {
+  xdescribe('Unshift', () => {
     it('Unshifts a new node into empty list', async () => {
       try {
         length = await linkedList.unshift(10);
@@ -212,20 +212,21 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Get', () => {
-    it('Returns undefined for indices outside its scope', () => {
-      expect(list.get(-1)).to.be.undefined;
-      expect(list.get(0)).to.be.undefined;
-      expect(list.get(1)).to.be.undefined;
-      list.push(10);
-      expect(list.get(-1)).to.be.undefined;
-      expect(list.get(1)).to.be.undefined;
+  describe('Get', () => {
+    it('Returns undefined for indices outside its scope', async () => {
+      expect(await linkedList.get(-1)).to.be.undefined;
+      expect(await linkedList.get(0)).to.be.undefined;
+      expect(await linkedList.get(1)).to.be.undefined;
+      await linkedList.push(10);
+      expect(await linkedList.get(-1)).to.be.undefined;
+      expect(await linkedList.get(1)).to.be.undefined;
     });
 
-    it('Returns the value for indices inside its scope', () => {
-      pushItems(list);
-      for (let i = 0; i < list.length; i++) {
-        expect(list.get(i, false)).to.equal((i + 1) * 10);
+    it('Returns the value for indices inside its scope', async () => {
+      await pushItems(linkedList);
+      meta = await linkedList.getMeta();
+      for (let i = 0; i < meta.length; i++) {
+        expect(await linkedList.get(i, false)).to.equal((i + 1) * 10);
       }
     });
   });
