@@ -44,6 +44,50 @@ class DoublyLinkedList {
       console.error(err.message, err.stack);
     }
   }
+
+  // DOUBLY LINKED LIST METHODS
+
+  async createNewNode(value, next = null) {
+    // returns insertOneWriteOpResult object; doc found in ops property array
+    return await this.collection.insertOne({ value, next });
+  }
+
+  async getMeta() {
+    // returns doc
+    return await this.collection.findOne({ meta: true });
+  }
+
+  async setMeta(obj) {
+    // returns findAndModifyWriteOpResult object; updated doc found in value property because returnOriginal is false
+    return await this.collection.findOneAndUpdate(
+      { meta: true },
+      { $set: {
+          head: obj.head,
+          tail: obj.tail,
+          length: obj.length
+        }
+      },
+      { returnOriginal: false }
+    );
+  }
+
 }
+
+(async function() {
+  try {
+    const linkedList = new DoublyLinkedList();
+    await linkedList.init();
+    await linkedList.resetAtlasData();
+    await linkedList.resetMeta();
+
+    // experiment with methods here
+    console.log('Ready');
+
+    // push
+
+  } catch (err) {
+    console.error(err.message, err.stack);
+  }
+})();
 
 module.exports = DoublyLinkedList;

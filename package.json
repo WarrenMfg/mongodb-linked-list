@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha \"./**/*.spec.js\" --watch --no-timeout",
-    "startDev": "nodemon index.js"
+    "startDev": "nodemon DoublyLinkedList.js"
   },
   "keywords": [],
   "author": "",

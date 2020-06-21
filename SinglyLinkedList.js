@@ -46,7 +46,7 @@ class SinglyLinkedList {
   }
 
 
-  // LINKED LIST METHODS
+  // SINGLY LINKED LIST METHODS
 
   async createNewNode(value, next = null) {
     // returns insertOneWriteOpResult object; doc found in ops property array
