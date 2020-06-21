@@ -303,6 +303,33 @@ class DoublyLinkedList {
     }
   }
 
+  async reverse() {
+    try {
+      const meta = await this.getMeta();
+
+      // if no length, then can't reverse
+      if (!meta.length) return false;
+
+      // swap tail and head
+      const newHead = meta.tail;
+      meta.tail = meta.head;
+      meta.head = newHead;
+      const updatedMeta = await this.setMeta(meta);
+
+      let pointer = await this.collection.findOne({ _id: updatedMeta.value.head });
+      while (pointer) {
+        // swap prev and next properties
+        await this.collection.updateOne({ _id: pointer._id }, { $set: { prev: pointer.next, next: pointer.prev } });
+        pointer = await this.collection.findOne({ _id: pointer.prev });
+      }
+
+      return true;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
 if (false) {
@@ -322,15 +349,10 @@ if (false) {
       await linkedList.push(40);
       await linkedList.push(50);
 
-      // insert
-      console.log(await linkedList.remove(4));
+      // reverse
+      console.log(await linkedList.reverse());
 
       console.log('Done');
-
-
-
-
-
 
     } catch (err) {
       console.error(err.message, err.stack);
