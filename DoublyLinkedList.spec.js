@@ -213,7 +213,9 @@ describe('Doubly Linked List', () => {
         areEqual = meta.head.toString() === meta.tail.toString();
         expect(areEqual).to.be.false;
         expect(head.next.toString()).to.equal(tail._id.toString());
+        expect(head.prev).to.be.null;
         expect(tail.prev.toString()).to.equal(head._id.toString());
+        expect(tail.next).to.be.null;
 
       } catch (err) {
         console.log(err);
@@ -236,7 +238,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    xit('Returns the value for indices inside its scope', async () => {
+    it('Returns the value for indices inside its scope', async () => {
       try {
         await pushItems(linkedList);
         meta = await linkedList.getMeta();
