@@ -7,8 +7,8 @@ class SinglyLinkedList {
   // DATABASE METHODS
 
   async init() {
-    this.client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
     try {
+      this.client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
       await this.client.connect();
       // console.log('Connected to MongoDB Atlas');
       this.collection = this.client.db('dev').collection('linked-list');
@@ -19,7 +19,12 @@ class SinglyLinkedList {
   }
 
   async resetAtlasData() {
-    await this.collection.deleteMany({ value: { $exists: true } });
+    try {
+      await this.collection.deleteMany({ value: { $exists: true } });
+
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async resetMeta() {
@@ -34,6 +39,7 @@ class SinglyLinkedList {
         },
         { upsert: true }
       );
+
     } catch (err) {
       console.error(err.message, err.stack);
     }
