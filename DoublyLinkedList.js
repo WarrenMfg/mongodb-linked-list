@@ -47,9 +47,9 @@ class DoublyLinkedList {
 
   // DOUBLY LINKED LIST METHODS
 
-  async createNewNode(value, next = null) {
+  async createNewNode(value, next = null, prev = null) {
     // returns insertOneWriteOpResult object; doc found in ops property array
-    return await this.collection.insertOne({ value, next });
+    return await this.collection.insertOne({ value, next, prev });
   }
 
   async getMeta() {
@@ -71,6 +71,30 @@ class DoublyLinkedList {
     );
   }
 
+  async push(value) {
+    try {
+      const meta = await this.getMeta();
+
+      if (!meta.head && !meta.tail) {
+        const newNode = await this.createNewNode(value);
+        meta.head = newNode._id;
+        meta.tail = newNode._id;
+      } else {
+        const newNode = await this.createNewNode(value, null, meta.tail);
+        await this.collection.findOneAndUpdate({ _id: meta.tail }, { $set: { next: newNode._id } });
+        meta.tail = newNode._id;
+      }
+
+      // update meta doc
+      meta.length++;
+      const updatedMeta = await this.setMeta(meta);
+      return updatedMeta.value.length;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
 (async function() {
@@ -81,9 +105,9 @@ class DoublyLinkedList {
     await linkedList.resetMeta();
 
     // experiment with methods here
-    console.log('Ready');
 
-    // push
+    // create, get and set
+
 
   } catch (err) {
     console.error(err.message, err.stack);

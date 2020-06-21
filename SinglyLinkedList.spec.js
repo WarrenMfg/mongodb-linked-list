@@ -2,7 +2,6 @@ const SinglyLinkedList = require('./SinglyLinkedList');
 const { expect } = require('chai');
 
 xdescribe('Singly Linked List', () => {
-  let list;
   let length;
   let meta;
   let head;
