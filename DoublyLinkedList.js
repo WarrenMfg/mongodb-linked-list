@@ -163,7 +163,7 @@ class DoublyLinkedList {
 
 }
 
-if (true) {
+if (false) {
   (async function() {
     try {
       const linkedList = new DoublyLinkedList();

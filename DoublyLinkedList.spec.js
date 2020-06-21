@@ -83,7 +83,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  describe('Pop', () => {
+  xdescribe('Pop', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const popped = await linkedList.pop();
@@ -134,7 +134,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Shift', () => {
+  describe('Shift', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const shifted = await linkedList.shift();
@@ -171,6 +171,7 @@ describe('Doubly Linked List', () => {
         tail = await linkedList.collection.findOne({ _id: meta.tail });
         expect(meta.length).to.equal(4);
         expect(head.value).to.equal(20);
+        expect(head.prev).to.be.null;
         expect(tail.value).to.equal(50);
 
       } catch (err) {
