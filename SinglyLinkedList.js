@@ -2,7 +2,7 @@ const { URI } = require('./config.js');
 const MongoClient = require('mongodb').MongoClient;
 
 
-class LinkedList {
+class SinglyLinkedList {
 
   // DATABASE METHODS
 
@@ -337,7 +337,7 @@ class LinkedList {
 
 // (async function() {
 //   try {
-//     const linkedList = new LinkedList();
+//     const linkedList = new SinglyLinkedList();
 //     await linkedList.init();
 //     await linkedList.resetAtlasData();
 //     await linkedList.resetMeta();
@@ -357,4 +357,4 @@ class LinkedList {
 //   }
 // })();
 
-module.exports = LinkedList;
+module.exports = SinglyLinkedList;

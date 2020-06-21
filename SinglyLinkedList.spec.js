@@ -1,4 +1,4 @@
-const LinkedList = require('./index');
+const SinglyLinkedList = require('./SinglyLinkedList');
 const { expect } = require('chai');
 
 describe('Singly Linked List', () => {
@@ -11,7 +11,7 @@ describe('Singly Linked List', () => {
 
   beforeEach(async () => {
     try {
-      linkedList = new LinkedList();
+      linkedList = new SinglyLinkedList();
       await linkedList.init();
       await linkedList.resetAtlasData();
       await linkedList.resetMeta();
@@ -32,7 +32,7 @@ describe('Singly Linked List', () => {
 
   describe('Constructor', () => {
     it('LinkedList constructor returns a new instance', () => {
-      expect(linkedList).to.be.an.instanceOf(LinkedList);
+      expect(linkedList).to.be.an.instanceOf(SinglyLinkedList);
     });
   });
 
