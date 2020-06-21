@@ -128,7 +128,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  describe('Shift', () => {
+  xdescribe('Shift', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const shifted = await linkedList.shift();
@@ -173,26 +173,42 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Unshift', () => {
-    it('Unshifts a new node into empty list', () => {
-      length = list.unshift(10);
-      expect(list.head.value).to.equal(10);
-      expect(list.tail.value).to.equal(10);
-      expect(list.length).to.equal(1);
-      expect(length).to.equal(1);
-      areEqual = list.head === list.tail;
-      expect(areEqual).to.be.true;
+  describe('Unshift', () => {
+    it('Unshifts a new node into empty list', async () => {
+      try {
+        length = await linkedList.unshift(10);
+        meta = await linkedList.getMeta();
+        head = await linkedList.collection.findOne({ _id: meta.head });
+        tail = await linkedList.collection.findOne({ _id: meta.tail });
+        expect(length).to.equal(1);
+        expect(meta.length).to.equal(1);
+        expect(head.value).to.equal(10);
+        expect(tail.value).to.equal(10);
+        areEqual = meta.head.toString() === meta.tail.toString();
+        expect(areEqual).to.be.true;
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Unshifts a new node into nonempty list', () => {
-      list.unshift(10);
-      length = list.unshift(20);
-      expect(list.head.value).to.equal(20);
-      expect(list.tail.value).to.equal(10);
-      expect(list.length).to.equal(2);
-      expect(length).to.equal(2);
-      areEqual = list.head === list.tail;
-      expect(areEqual).to.be.false;
+    it('Unshifts a new node into nonempty list', async () => {
+      try {
+        await linkedList.unshift(10);
+        length = await linkedList.unshift(20);
+        meta = await linkedList.getMeta();
+        head = await linkedList.collection.findOne({ _id: meta.head });
+        tail = await linkedList.collection.findOne({ _id: meta.tail });
+        expect(length).to.equal(2);
+        expect(meta.length).to.equal(2);
+        expect(head.value).to.equal(20);
+        expect(tail.value).to.equal(10);
+        areEqual = meta.head.toString() === meta.tail.toString();
+        expect(areEqual).to.be.false;
+
+      } catch (err) {
+        console.log(err);
+      }
     });
   });
 
