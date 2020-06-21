@@ -235,7 +235,6 @@ class SinglyLinkedList {
       if (!node) return false;
 
       // otherwise, update doc
-      node.value = value;
       await this.collection.updateOne({ _id: node._id }, { $set: { value } });
       return true;
 

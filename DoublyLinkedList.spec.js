@@ -223,7 +223,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  describe('Get', () => {
+  xdescribe('Get', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.get(-1)).to.be.undefined;
@@ -252,7 +252,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Set', () => {
+  describe('Set', () => {
     it('Returns false for indices outside its scope', async () => {
       try {
         expect(await linkedList.set(-1)).to.be.false;
@@ -267,7 +267,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    it ('Sets items and returns true for indices inside its scope', async () => {
+    xit ('Sets items and returns true for indices inside its scope', async () => {
       try {
         await pushItems(linkedList);
         meta = await linkedList.getMeta();

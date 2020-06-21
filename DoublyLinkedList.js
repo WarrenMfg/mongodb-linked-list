@@ -225,6 +225,22 @@ class DoublyLinkedList {
     }
   }
 
+  async set(index, value) {
+    try {
+      // get the value
+      const node = await this.get(index);
+      // if not exists, return false
+      if (!node) return false;
+
+      // otherwise, update doc
+      await this.collection.updateOne({ _id: node._id }, { $set: { value } });
+      return true;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
 if (false) {
@@ -245,7 +261,8 @@ if (false) {
       await linkedList.push(50);
 
       // get
-      console.log(await linkedList.get(4));
+      console.log(await linkedList.set(6, 300));
+      console.log(await linkedList.get(2));
 
       console.log('Done');
 
