@@ -189,6 +189,42 @@ class DoublyLinkedList {
     }
   }
 
+  async get(index, nodeWanted = true) {
+    try {
+      const meta = await this.getMeta();
+
+      if (index < 0 || index > meta.length - 1) return undefined;
+
+      let counter;
+      let pointer;
+
+      // start from head
+      if (index <= meta.length / 2) {
+        counter = 0;
+        pointer = await this.collection.findOne({ _id: meta.head });
+        while (counter !== index) {
+          counter++;
+          pointer = await this.collection.findOne({ _id: pointer.next });
+        }
+
+      // start from tail
+      } else {
+        counter = meta.length - 1;
+        pointer = await this.collection.findOne({ _id: meta.tail });
+        while (counter !== index) {
+          counter--;
+          pointer = await this.collection.findOne({ _id: pointer.prev });
+        }
+      }
+
+      // return pointer or value
+      return nodeWanted ? pointer : pointer.value;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
 if (false) {
@@ -202,19 +238,14 @@ if (false) {
       // experiment with methods here
 
       // push
-      // await linkedList.push(10);
-      // await linkedList.push(20);
-      // await linkedList.push(30);
-      // await linkedList.push(40);
-      // await linkedList.push(50);
+      await linkedList.push(10);
+      await linkedList.push(20);
+      await linkedList.push(30);
+      await linkedList.push(40);
+      await linkedList.push(50);
 
-      // unshift
-      console.log(await linkedList.unshift(10));
-      console.log(await linkedList.unshift(20));
-      console.log(await linkedList.unshift(30));
-      console.log(await linkedList.unshift(40));
-      console.log(await linkedList.unshift(50));
-      console.log(await linkedList.getMeta());
+      // get
+      console.log(await linkedList.get(4));
 
       console.log('Done');
 

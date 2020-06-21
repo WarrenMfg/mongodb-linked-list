@@ -180,7 +180,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  describe('Unshift', () => {
+  xdescribe('Unshift', () => {
     it('Unshifts a new node into empty list', async () => {
       try {
         length = await linkedList.unshift(10);
@@ -221,7 +221,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Get', () => {
+  describe('Get', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.get(-1)).to.be.undefined;
@@ -236,7 +236,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    it('Returns the value for indices inside its scope', async () => {
+    xit('Returns the value for indices inside its scope', async () => {
       try {
         await pushItems(linkedList);
         meta = await linkedList.getMeta();
