@@ -284,7 +284,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  describe('Insert', () => {
+  xdescribe('Insert', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.insert(-1)).to.be.undefined;
@@ -329,10 +329,11 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Remove', () => {
+  describe('Remove', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.remove(-1)).to.be.undefined;
+        expect(await linkedList.remove(0)).to.be.undefined;
         expect(await linkedList.remove(1)).to.be.undefined;
         await linkedList.push(10);
         expect(await linkedList.remove(-1)).to.be.undefined;
