@@ -274,6 +274,35 @@ class DoublyLinkedList {
     }
   }
 
+  async remove(index) {
+    try {
+      const meta = await this.getMeta();
+
+      // if index is out of bounds, return undefined
+      if (index < 0 || index >= meta.length) return undefined;
+      // if index is 0, use shift
+      if (index === 0) return this.shift();
+      // if index is last, use pop
+      if (index === meta.length - 1) return this.pop();
+
+      // find the doc
+      let removed = await this.get(index);
+      // delete the doc
+      removed = await this.collection.findOneAndDelete({ _id: removed._id });
+      // update prev to point to next
+      await this.collection.findOneAndUpdate({ _id: removed.value.prev }, { $set: { next: removed.value.next } });
+      // update next to point to prev
+      await this.collection.findOneAndUpdate({ _id: removed.value.next }, { $set: { prev: removed.value.prev } });
+
+      meta.length--;
+      await this.setMeta(meta);
+      return removed.value.value;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
 if (false) {
@@ -294,7 +323,7 @@ if (false) {
       await linkedList.push(50);
 
       // insert
-      console.log(await linkedList.insert(3, 300));
+      console.log(await linkedList.remove(4));
 
       console.log('Done');
 
