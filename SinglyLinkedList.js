@@ -257,7 +257,7 @@ class SinglyLinkedList {
       // otherwise, create new node
       let newNode = await this.createNewNode(value);
       newNode = newNode.ops[0];
-      // iterate with this.get
+      // get previous
       const pre = await this.get(index - 1);
       // update newNode.next to pre.next
       await this.collection.updateOne({ _id: newNode._id }, { $set: { next: pre.next } });

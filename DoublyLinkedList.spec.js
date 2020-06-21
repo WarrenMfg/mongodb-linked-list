@@ -252,7 +252,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  describe('Set', () => {
+  xdescribe('Set', () => {
     it('Returns false for indices outside its scope', async () => {
       try {
         expect(await linkedList.set(-1)).to.be.false;
@@ -284,7 +284,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Insert', () => {
+  describe('Insert', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.insert(-1)).to.be.undefined;
@@ -298,7 +298,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    it('Returns length when index === 0 and index === this.length', async () => {
+    xit('Returns length when index === 0 and index === this.length', async () => {
       try {
         length = await linkedList.insert(0, 10);
         expect(length).to.equal(1);
@@ -310,7 +310,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    it('Returns length when inserting in the middle of the list', async () => {
+    xit('Returns length when inserting in the middle of the list', async () => {
       try {
         await pushItems(linkedList);
         length = await linkedList.insert(2, 200);

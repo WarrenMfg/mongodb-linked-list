@@ -241,9 +241,42 @@ class DoublyLinkedList {
     }
   }
 
+  async insert(index, value) {
+    try {
+      const meta = await this.getMeta();
+
+      // if index is out of bounds, return undefined (can insert at meta.length, but not greater than)
+      if (index < 0 || index > meta.length) return undefined;
+      // if index is 0, unshift;
+      if (index === 0) return this.unshift(value);
+      // if index is meta.length, push
+      if (index === meta.length) return this.push(value);
+
+      // get previous
+      const pre = await this.get(index - 1);
+
+      // otherwise, create new node and connect to next and pre
+      let newNode = await this.createNewNode(value, pre.next, pre._id);
+      newNode = newNode.ops[0];
+
+      // connect pre and newNode
+      await this.collection.findOneAndUpdate({ _id: pre._id }, { $set: { next: newNode._id } });
+      // connect post and newNode
+      await this.collection.findOneAndUpdate({ _id: newNode.next }, { $set: { prev: newNode._id } });
+
+      // update meta
+      meta.length++;
+      const updatedMeta = await this.setMeta(meta);
+      return updatedMeta.value.length;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
-if (false) {
+if (true) {
   (async function() {
     try {
       const linkedList = new DoublyLinkedList();
@@ -260,9 +293,8 @@ if (false) {
       await linkedList.push(40);
       await linkedList.push(50);
 
-      // get
-      console.log(await linkedList.set(6, 300));
-      console.log(await linkedList.get(2));
+      // insert
+      console.log(await linkedList.insert(3, 300));
 
       console.log('Done');
 
