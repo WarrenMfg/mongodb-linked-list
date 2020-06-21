@@ -300,6 +300,10 @@ class LinkedList {
   async reverse() {
     try {
       const meta = await this.getMeta();
+
+      // if no length, then can't reverse
+      if (!meta.length) return false;
+
       // get head
       let node = await this.collection.findOne({ _id: meta.head });
       // flip meta's head and tail

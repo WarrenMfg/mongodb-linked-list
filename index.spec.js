@@ -30,13 +30,13 @@ describe('Singly Linked List', () => {
     }
   });
 
-  xdescribe('Constructor', () => {
+  describe('Constructor', () => {
     it('LinkedList constructor returns a new instance', () => {
       expect(linkedList).to.be.an.instanceOf(LinkedList);
     });
   });
 
-  xdescribe('Push', () => {
+  describe('Push', () => {
     it('Pushes a new node into empty list', async () => {
       try {
         length = await linkedList.push(10);
@@ -80,7 +80,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Pop', () => {
+  describe('Pop', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const popped = await linkedList.pop();
@@ -128,7 +128,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Shift', () => {
+  describe('Shift', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const shifted = await linkedList.shift();
@@ -173,7 +173,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Unshift', () => {
+  describe('Unshift', () => {
     it('Unshifts a new node into empty list', async () => {
       try {
         length = await linkedList.unshift(10);
@@ -212,7 +212,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Get', () => {
+  describe('Get', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.get(-1)).to.be.undefined;
@@ -241,7 +241,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Set', () => {
+  describe('Set', () => {
     it('Returns false for indices outside its scope', async () => {
       try {
         expect(await linkedList.set(-1)).to.be.false;
@@ -273,7 +273,7 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Insert', () => {
+  describe('Insert', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.insert(-1)).to.be.undefined;
@@ -371,29 +371,50 @@ describe('Singly Linked List', () => {
     });
   });
 
-  xdescribe('Reverse', () => {
-    it('Returns null on an empty list', () => {
-      expect(list.reverse()).to.be.null;
+  describe('Reverse', () => {
+    it('Returns false on an empty list', async () => {
+      try {
+        expect(await linkedList.reverse()).to.be.false;
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Returns the same node on a list of length 1', () => {
-      list.push(10);
-      expect(list.head).to.equal(list.tail);
-      list.reverse();
-      expect(list.head).to.equal(list.tail);
+    it('Returns true on a list of length 1', async () => {
+      try {
+        await linkedList.push(10);
+        meta = await linkedList.getMeta();
+        expect(meta.head.toString()).to.equal(meta.tail.toString());
+        await linkedList.reverse();
+        const metaReversed = await linkedList.getMeta();
+        expect(metaReversed.head.toString()).to.equal(metaReversed.tail.toString());
+        expect(meta.head.toString()).to.equal(metaReversed.tail.toString());
+        expect(meta.tail.toString()).to.equal(metaReversed.head.toString());
+
+      } catch (err) {
+        console.log(err);
+      }
     });
 
-    it('Reverses a list and returns the new head/old tail', () => {
-      pushItems(list);
-      const oldHead = list.get(0);
-      const oldTail = list.get(list.length - 1);
-      const newHead = list.reverse();
-      expect(newHead).to.equal(oldTail);
-      expect(list.head).to.equal(oldTail);
-      expect(list.tail).to.equal(oldHead);
-      for (let i = 0; i < list.length; i++) {
+    it('Returns true on a list of length > 1', async () => {
+      try {
+        await pushItems(linkedList);
+        meta = await linkedList.getMeta();
+        const oldHead = await linkedList.get(0);
+        const oldTail = await linkedList.get(meta.length - 1);
+        await linkedList.reverse();
+        const newHead = await linkedList.get(0);
+        const newTail = await linkedList.get(meta.length - 1);
+        expect(newHead._id.toString()).to.equal(oldTail._id.toString());
+        expect(newTail._id.toString()).to.equal(oldHead._id.toString());
         const newOrder = [50,40,30,20,10];
-        expect(list.get(i, false)).to.equal(newOrder[i]);
+        for (let i = 0; i < meta.length; i++) {
+          expect(await linkedList.get(i, false)).to.equal(newOrder[i]);
+        }
+
+      } catch (err) {
+        console.log(err);
       }
     });
   });
