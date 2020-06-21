@@ -134,7 +134,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  describe('Shift', () => {
+  xdescribe('Shift', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const shifted = await linkedList.shift();
@@ -180,7 +180,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Unshift', () => {
+  describe('Unshift', () => {
     it('Unshifts a new node into empty list', async () => {
       try {
         length = await linkedList.unshift(10);
@@ -212,6 +212,8 @@ describe('Doubly Linked List', () => {
         expect(tail.value).to.equal(10);
         areEqual = meta.head.toString() === meta.tail.toString();
         expect(areEqual).to.be.false;
+        expect(head.next.toString()).to.equal(tail._id.toString());
+        expect(tail.prev.toString()).to.equal(head._id.toString());
 
       } catch (err) {
         console.log(err);
