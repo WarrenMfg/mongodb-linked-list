@@ -10,7 +10,7 @@ class DoublyLinkedList {
     try {
       this.client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
       await this.client.connect();
-      console.log('Connected to MongoDB Atlas');
+      // console.log('Connected to MongoDB Atlas');
       this.collection = this.client.db('dev').collection('linked-list');
 
     } catch (err) {
@@ -77,12 +77,12 @@ class DoublyLinkedList {
 
       if (!meta.head && !meta.tail) {
         const newNode = await this.createNewNode(value);
-        meta.head = newNode._id;
-        meta.tail = newNode._id;
+        meta.head = newNode.insertedId;
+        meta.tail = newNode.insertedId;
       } else {
         const newNode = await this.createNewNode(value, null, meta.tail);
-        await this.collection.findOneAndUpdate({ _id: meta.tail }, { $set: { next: newNode._id } });
-        meta.tail = newNode._id;
+        await this.collection.findOneAndUpdate({ _id: meta.tail }, { $set: { next: newNode.insertedId } });
+        meta.tail = newNode.insertedId;
       }
 
       // update meta doc
@@ -106,7 +106,18 @@ class DoublyLinkedList {
 
     // experiment with methods here
 
-    // create, get and set
+    // push
+    await linkedList.push(10);
+    await linkedList.push(20);
+    await linkedList.push(30);
+    await linkedList.push(40);
+    await linkedList.push(50);
+
+    console.log('Done');
+
+
+
+
 
 
   } catch (err) {

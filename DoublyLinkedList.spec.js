@@ -36,7 +36,7 @@ describe('Doubly Linked List', () => {
   });
 
   describe('Push', () => {
-    xit('Pushes a new node into empty list', async () => {
+    it('Pushes a new node into empty list', async () => {
       try {
         length = await linkedList.push(10);
         meta = await linkedList.getMeta();
@@ -46,6 +46,7 @@ describe('Doubly Linked List', () => {
         expect(meta.length).to.equal(1);
         expect(head.value).to.equal(10);
         expect(head.next).to.be.null;
+        expect(head.prev).to.be.null;
         expect(meta.head.toString()).to.equal(head._id.toString());
         areEqual = meta.head.toString() === meta.tail.toString();
         expect(areEqual).to.be.true;
@@ -55,7 +56,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    xit('Pushes a new node into nonempty list', async () => {
+    it('Pushes a new node into nonempty list', async () => {
       try {
         await linkedList.push(10);
         length = await linkedList.push(20);
@@ -73,6 +74,9 @@ describe('Doubly Linked List', () => {
         expect(areEqual).to.be.true;
         areEqual = meta.head.toString() === meta.tail.toString();
         expect(areEqual).to.be.false;
+        expect(head.next.toString()).to.equal(tail._id.toString());
+        expect(tail.prev.toString()).to.equal(head._id.toString());
+
       } catch (err) {
         console.log(err);
       }
