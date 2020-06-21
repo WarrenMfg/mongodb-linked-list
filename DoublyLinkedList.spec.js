@@ -298,7 +298,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    xit('Returns length when index === 0 and index === this.length', async () => {
+    it('Returns length when index === 0 and index === this.length', async () => {
       try {
         length = await linkedList.insert(0, 10);
         expect(length).to.equal(1);
@@ -310,7 +310,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    xit('Returns length when inserting in the middle of the list', async () => {
+    it('Returns length when inserting in the middle of the list', async () => {
       try {
         await pushItems(linkedList);
         length = await linkedList.insert(2, 200);
