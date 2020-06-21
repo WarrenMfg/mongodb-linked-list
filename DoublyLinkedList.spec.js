@@ -29,13 +29,13 @@ describe('Doubly Linked List', () => {
     }
   });
 
-  describe('Constructor', () => {
+  xdescribe('Constructor', () => {
     it('LinkedList constructor returns a new instance', () => {
       expect(linkedList).to.be.an.instanceOf(DoublyLinkedList);
     });
   });
 
-  describe('Push', () => {
+  xdescribe('Push', () => {
     it('Pushes a new node into empty list', async () => {
       try {
         length = await linkedList.push(10);
@@ -83,31 +83,34 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Pop', () => {
+  describe('Pop', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const popped = await linkedList.pop();
         expect(popped).to.be.undefined;
+
       } catch (err) {
         console.log(err);
       }
     });
 
-    it('Returns popped value of a one item list and resets instance to empty list', async () => {
+    it('Returns popped value for a one item list and resets instance to empty list', async () => {
       try {
         await linkedList.push(10);
         const popped = await linkedList.pop();
-        expect(popped).to.equal(10);
         meta = await linkedList.getMeta();
+
+        expect(popped).to.equal(10);
         expect(meta.head).to.be.null;
         expect(meta.tail).to.be.null;
         expect(meta.length).to.equal(0);
+
       } catch (err) {
         console.log(err);
       }
     });
 
-    it('Iterates through a list of items and returns the last value', async () => {
+    it('Returns popped value of a multi-item list', async () => {
       try {
         await pushItems(linkedList);
         meta = await linkedList.getMeta();

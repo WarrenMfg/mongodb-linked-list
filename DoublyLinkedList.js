@@ -130,35 +130,37 @@ class DoublyLinkedList {
 
 }
 
-(async function() {
-  try {
-    const linkedList = new DoublyLinkedList();
-    await linkedList.init();
-    await linkedList.resetAtlasData();
-    await linkedList.resetMeta();
+if (false) {
+  (async function() {
+    try {
+      const linkedList = new DoublyLinkedList();
+      await linkedList.init();
+      await linkedList.resetAtlasData();
+      await linkedList.resetMeta();
 
-    // experiment with methods here
+      // experiment with methods here
 
-    // push
-    await linkedList.push(10);
-    await linkedList.push(20);
-    await linkedList.push(30);
-    await linkedList.push(40);
-    await linkedList.push(50);
+      // push
+      await linkedList.push(10);
+      await linkedList.push(20);
+      await linkedList.push(30);
+      await linkedList.push(40);
+      await linkedList.push(50);
 
-    // pop
-    console.log(await linkedList.pop());
+      // pop
+      console.log(await linkedList.pop());
 
-    console.log('Done');
-
-
-
+      console.log('Done');
 
 
 
-  } catch (err) {
-    console.error(err.message, err.stack);
-  }
-})();
+
+
+
+    } catch (err) {
+      console.error(err.message, err.stack);
+    }
+  })();
+}
 
 module.exports = DoublyLinkedList;
