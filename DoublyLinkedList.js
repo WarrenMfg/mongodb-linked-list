@@ -95,6 +95,39 @@ class DoublyLinkedList {
     }
   }
 
+  async pop() {
+    try {
+      const meta = await this.getMeta();
+
+      // if nothing to pop, return undefined
+      if (!meta.tail) return undefined;
+
+      // delete the doc
+      const popped = await this.collection.findOneAndDelete({ _id: meta.tail });
+
+      // if head and tail are equal
+      if (meta.head.toString() === meta.tail.toString()) {
+        meta.head = null;
+        meta.tail = null;
+        meta.length = 0;
+
+      // if head and tail are not equal
+      } else {
+        meta.tail = popped.value.prev;
+        await this.collection.findOneAndUpdate({ _id: meta.tail }, { $set: { next: null } });
+        meta.length--;
+      }
+
+      // update meta
+      await this.setMeta(meta);
+      // return popped value
+      return popped.value.value;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
 (async function() {
@@ -112,6 +145,9 @@ class DoublyLinkedList {
     await linkedList.push(30);
     await linkedList.push(40);
     await linkedList.push(50);
+
+    // pop
+    console.log(await linkedList.pop());
 
     console.log('Done');
 
