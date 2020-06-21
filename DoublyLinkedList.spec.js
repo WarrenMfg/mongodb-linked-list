@@ -267,7 +267,7 @@ describe('Doubly Linked List', () => {
       }
     });
 
-    xit ('Sets items and returns true for indices inside its scope', async () => {
+    it ('Sets items and returns true for indices inside its scope', async () => {
       try {
         await pushItems(linkedList);
         meta = await linkedList.getMeta();
