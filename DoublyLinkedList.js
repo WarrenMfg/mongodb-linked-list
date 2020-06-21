@@ -161,9 +161,37 @@ class DoublyLinkedList {
     }
   }
 
+  async unshift(value) {
+    try {
+      const meta = await this.getMeta();
+
+      // if no head
+      if (!meta.head) {
+        const newNode = await this.createNewNode(value);
+        meta.head = newNode.insertedId;
+        meta.tail = newNode.insertedId;
+
+      // if head exists
+      } else {
+        const newNode = await this.createNewNode(value, meta.head, null);
+        await this.collection.findOneAndUpdate({ _id: meta.head }, { $set: { prev: newNode.insertedId } });
+        meta.head = newNode.insertedId;
+      }
+
+      // update meta
+      meta.length++;
+      const updatedMeta = await this.setMeta(meta);
+      // return new length
+      return updatedMeta.value.length;
+
+    } catch (err) {
+      console.log(err.message, err.stack);
+    }
+  }
+
 }
 
-if (false) {
+if (true) {
   (async function() {
     try {
       const linkedList = new DoublyLinkedList();
@@ -174,14 +202,19 @@ if (false) {
       // experiment with methods here
 
       // push
-      await linkedList.push(10);
-      await linkedList.push(20);
-      await linkedList.push(30);
-      await linkedList.push(40);
-      await linkedList.push(50);
+      // await linkedList.push(10);
+      // await linkedList.push(20);
+      // await linkedList.push(30);
+      // await linkedList.push(40);
+      // await linkedList.push(50);
 
-      // shift
-      console.log(await linkedList.shift());
+      // unshift
+      console.log(await linkedList.unshift(10));
+      console.log(await linkedList.unshift(20));
+      console.log(await linkedList.unshift(30));
+      console.log(await linkedList.unshift(40));
+      console.log(await linkedList.unshift(50));
+      console.log(await linkedList.getMeta());
 
       console.log('Done');
 
