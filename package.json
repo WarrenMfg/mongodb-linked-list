@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha \"DoublyLinkedList.spec.js\" --watch --no-timeout",
+    "test": "mocha \"./**/*.spec.js\" --watch --no-timeout",
     "startDev": "nodemon DoublyLinkedList.js"
   },
   "keywords": [],

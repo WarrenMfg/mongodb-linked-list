@@ -29,13 +29,13 @@ describe('Doubly Linked List', () => {
     }
   });
 
-  xdescribe('Constructor', () => {
+  describe('Constructor', () => {
     it('LinkedList constructor returns a new instance', () => {
       expect(linkedList).to.be.an.instanceOf(DoublyLinkedList);
     });
   });
 
-  xdescribe('Push', () => {
+  describe('Push', () => {
     it('Pushes a new node into empty list', async () => {
       try {
         length = await linkedList.push(10);
@@ -83,7 +83,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Pop', () => {
+  describe('Pop', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const popped = await linkedList.pop();
@@ -134,7 +134,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Shift', () => {
+  describe('Shift', () => {
     it('Returns undefined for an empty list', async () => {
       try {
         const shifted = await linkedList.shift();
@@ -180,7 +180,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Unshift', () => {
+  describe('Unshift', () => {
     it('Unshifts a new node into empty list', async () => {
       try {
         length = await linkedList.unshift(10);
@@ -223,7 +223,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Get', () => {
+  describe('Get', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.get(-1)).to.be.undefined;
@@ -252,7 +252,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Set', () => {
+  describe('Set', () => {
     it('Returns false for indices outside its scope', async () => {
       try {
         expect(await linkedList.set(-1)).to.be.false;
@@ -284,7 +284,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Insert', () => {
+  describe('Insert', () => {
     it('Returns undefined for indices outside its scope', async () => {
       try {
         expect(await linkedList.insert(-1)).to.be.undefined;
@@ -383,7 +383,7 @@ describe('Doubly Linked List', () => {
     });
   });
 
-  xdescribe('Reverse', () => {
+  describe('Reverse', () => {
     it('Returns false on an empty list', async () => {
       try {
         expect(await linkedList.reverse()).to.be.false;
