@@ -10,7 +10,7 @@ class LinkedList {
     this.client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true });
     try {
       await this.client.connect();
-      console.log('Connected to MongoDB Atlas');
+      // console.log('Connected to MongoDB Atlas');
       this.collection = this.client.db('dev').collection('linked-list');
 
     } catch (err) {
@@ -331,24 +331,26 @@ class LinkedList {
 }
 
 
-(async function() {
-  try {
-    const linkedList = new LinkedList();
-    await linkedList.init();
-    await linkedList.resetAtlasData();
-    await linkedList.resetMeta();
+// (async function() {
+//   try {
+//     const linkedList = new LinkedList();
+//     await linkedList.init();
+//     await linkedList.resetAtlasData();
+//     await linkedList.resetMeta();
 
-    // experiment with methods here
+//     // experiment with methods here
 
-    // push example
-    await linkedList.push('Cat');
-    await linkedList.push('Dog');
-    await linkedList.push('Rooster');
+//     // push example
+//     await linkedList.push('Cat');
+//     await linkedList.push('Dog');
+//     await linkedList.push('Rooster');
 
-    // reverse example
-    await linkedList.reverse();
+//     // reverse example
+//     await linkedList.reverse();
 
-  } catch (err) {
-    console.error(err.message, err.stack);
-  }
-})();
+//   } catch (err) {
+//     console.error(err.message, err.stack);
+//   }
+// })();
+
+module.exports = LinkedList;
